@@ -83,8 +83,32 @@ footer {
 .footer-content {
     max-width: 900px;
     margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .footer-content p {
     margin: 5px 0;
+}
+
+.footer-content a {
+    color: yellow;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s;
+}
+
+.footer-content a:hover {
+    color: black;
+}
+
+.footer-content a img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
 }
