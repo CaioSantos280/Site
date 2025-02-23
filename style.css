@@ -66,49 +66,106 @@ header {
     color: #8B4513;
 }
 
-footer {
+.contact-info {
     background-color: #8B4513;
     color: white;
     padding: 20px;
-    margin-top: 20px;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    text-align: center;
-    box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.footer-content {
+    margin: 20px auto;
     max-width: 900px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.footer-content p {
-    margin: 5px 0;
+.contact-info p {
+    margin: 10px 0;
+    font-size: 18px;
 }
 
-.footer-content a {
+.contact-info a {
     color: yellow;
     text-decoration: none;
     font-weight: bold;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
+    transition: color 0.3s;
+    font-size: 18px;
+}
+
+.contact-info a:hover {
+    color: rgb(185, 125, 14);
+}
+
+.contact-info a img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+footer {
+    background-color: #5a2d0c;
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+
+
+.contato {
+    background-color: #f4d8a4;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 900px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contato h2 {
+    color: #8B4513;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.contato p {
+    font-size: 16px;
+    color: #5a2d0c;
+    margin: 5px 0;
+}
+
+.instagram-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #8B4513;
+    text-decoration: none;
+    margin-top: 10px;
     transition: color 0.3s;
 }
 
-.footer-content a:hover {
-    color:  rgb(185, 125, 14);
+.instagram-link img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
 }
 
-.footer-content a img {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+.instagram-link:hover {
+    color: #b36b00;
+}
+
+/* Rodapé */
+footer {
+    background-color: #8B4513;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    margin-top: 20px;
+    box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1);
 }
