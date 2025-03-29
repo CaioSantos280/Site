@@ -1,13 +1,13 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8e8d0;
+    background-color: #492f0a;
     margin: 0;
     padding: 0;
     text-align: center;
 }
 
 header {
-    background-color: #8B4513;
+    background-color: #6e3710;
     color: white;
     padding: 20px;
     text-align: center;
@@ -20,7 +20,8 @@ header {
     max-width: 900px;
     margin: 20px auto;
     padding: 20px;
-    background: white;
+    background: #191a1c;
+    color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -33,7 +34,7 @@ header {
 }
 
 .bolo {
-    background: #fff5e1;
+    background: #4d3501;
     padding: 15px;
     border-radius: 10px;
     text-align: center;
@@ -50,20 +51,20 @@ header {
 
 .bolo h3 {
     margin: 10px 0;
-    color: #5a2d0c;
+    color: #eb9053;
 }
 
 .bolo p {
     margin: 5px 0;
     font-size: 14px;
-    color: #8B4513;
+    color: #eb9053;
 }
 
 .bolo span {
     display: block;
     font-size: 18px;
     font-weight: bold;
-    color: #8B4513;
+    color: #eb9053;
 }
 
 .contact-info {
@@ -115,7 +116,8 @@ footer {
 
 
 .contato {
-    background-color: #f4d8a4;
+    background-color: #64450c;
+    color: white;
     padding: 20px;
     border-radius: 10px;
     margin: 20px auto;
@@ -132,7 +134,7 @@ footer {
 
 .contato p {
     font-size: 16px;
-    color: #5a2d0c;
+    color: white;
     margin: 5px 0;
 }
 
