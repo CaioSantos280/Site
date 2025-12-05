@@ -3,620 +3,438 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="shortcut icon" href="delicias-do-jose-iconpng.png" type="image/x-icon">
-  <link rel="stylesheet" href="style.css">
-  <title>Cardápio da Loja</title>
+  <title>Delícias do José — Cardápio</title>
+  <meta name="description" content="Cardápio online — bolos caseiros, piscininhas, combos e contato. Peça pelo WhatsApp." />
+  <link rel="icon" href="delicias-do-jose-iconpng.png">
   <style>
-    /* ========== CORES (mantive o tom quente/marrom do seu site) ========== */
+    /* -------------------- VARIÁVEIS DE COR -------------------- */
     :root{
-      --bg: #f4c987;       /* amarelo claro fundo das cartas */
-      --page-bg: #f0bf72;  /* fundo geral suave */
-      --card-bg: #f6d89b;  /* fundo claro das seções */
-      --accent: #6a2f14;   /* marrom escuro principal */
-      --accent-2: #7b3b17; /* tom alternativo para bordas */
-      --text: #3a2a20;
+      --bg:#fff8f2;
+      --panel:#f1d8b2;
+      --accent:#6c361a;
+      --accent-2:#6c361a;
+      --muted:#6c361a;
+      --glass: #f6c57a;
+      --card-shadow: 0 8px 18px #6c361a;
+      --radius:16px;
     }
 
-    /* ========== RESET e base ========== */
+    /* -------------------- RESET -------------------- */
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
-      background: linear-gradient(180deg,var(--page-bg) 0%, #f2c78a 100%);
-      color:var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #f6c57a; /* -------------------- FUNDO AQUI -------------------- */
+      color:var(--muted);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      padding:28px;
+      padding:20px;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* ========== HEADER ========== */
-    header{
-      max-width:1200px;
-      margin:0 auto 22px;
-      position:relative;
-      text-align:center;
-    }
+    /* -------------------- LAYOUT PRINCIPAL -------------------- */
+    .wrap{max-width:1100px;margin:0 auto}
+    header{display:flex;align-items:center;gap:18px;justify-content:space-between}
     .brand{
-      background:var(--accent);
-      color:var(--card-bg);
-      padding:26px 16px;
-      border-radius:18px;
-      font-size:28px;
-      font-weight:600;
-      box-shadow: 0 6px 0 rgba(0,0,0,0.06);
+      display:flex;gap:14px;align-items:center
     }
+    .brand .logo{width:72px;height:72px;border-radius:14px;flex:0 0 72px;background:url('delicias-do-jose-iconpng.png') center/cover no-repeat;border:4px solid var(--accent);box-shadow:var(--card-shadow)}
+    .brand h1{margin:0;font-size:20px;color:var(--accent)}
+    .brand p{margin:0;font-size:13px;color:var(--muted)}
 
-    /* hamburger */
-    .hamburger{
-      position:fixed;
-      right:28px;
-      top:22px;
-      z-index:1600;
-      width:46px;
-      height:42px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      border-radius:10px;
-      background:linear-gradient(180deg,var(--card-bg), #f1c985);
-      box-shadow: 0 4px 0 rgba(0,0,0,0.08), inset 0 -2px 0 rgba(0,0,0,0.03);
-      border:4px solid var(--accent);
-    }
-    .hamburger .bar{
-      width:22px;
-      height:3px;
-      background:var(--accent);
-      border-radius:2px;
-      position:relative;
-    }
-    .hamburger .bar::before,
-    .hamburger .bar::after{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      height:3px;
-      background:var(--accent);
-      border-radius:2px;
-    }
-    .hamburger .bar::before{ top:-7px; }
-    .hamburger .bar::after{ top:7px; }
+    /* -------------------- MENU HAMBURGER (ACESSÍVEL) -------------------- */
+    .top-controls{display:flex;gap:10px;align-items:center}
+    .hambutton{background:#f6c57a;border:2px solid var(--accent);padding:10px;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,0.04)}
+    .hambutton .bars{width:24px;height:18px;position:relative}
+    .hambutton .bars span{position:absolute;height:3px;width:100%;background:var(--accent);left:0;border-radius:3px}
+    .hambutton .bars span:nth-child(1){top:0}
+    .hambutton .bars span:nth-child(2){top:7px}
+    .hambutton .bars span:nth-child(3){top:14px}
 
-    /* ========== OVERLAY NAV ========== */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.45);
-      display:none;
-      z-index:1500;
-    }
-    .side-nav{
-      position:fixed;
-      right:0;
-      top:0;
-      height:100%;
-      width:320px;
-      max-width:85%;
-      background:linear-gradient(180deg,var(--card-bg), #f0c57a);
-      box-shadow: -8px 0 30px rgba(0,0,0,0.35);
-      padding:30px;
-      transform:translateX(110%);
-      transition:transform .28s ease;
-      border-left:8px solid var(--accent);
-      z-index:1550;
-      overflow:auto;
-    }
-    .side-nav.open{ transform:translateX(0); }
-    .overlay.open{ display:block; }
-    .side-nav h3{
-      margin:0 0 18px 0;
-      color:var(--accent);
-      font-size:20px;
-    }
-    .side-nav a{
-      display:block;
-      padding:10px 12px;
-      border-radius:8px;
-      margin-bottom:8px;
-      text-decoration:none;
-      color:var(--accent);
-      font-weight:600;
-      background:transparent;
-    }
-    .side-nav a:hover{ background:rgba(106,47,20,0.06) }
+    /* BOTÕES RÁPIDOS */
+    .cta{display:flex;gap:10px}
+    .btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:12px;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:10px;border:0}
+    .btn.secondary{background:transparent;color:var(--accent);border:2px solid var(--accent)}
 
-    /* ========== CONTAINER SECTIONS ========== */
-    .container{
-      max-width:1200px;
-      margin:18px auto;
-      padding:22px;
-      border-radius:20px;
-      background:linear-gradient(180deg, var(--accent) 0%, #653117 100%);
-      box-shadow: 0 8px 0 rgba(0,0,0,0.06);
-    }
+    /* -------------------- HERO / BUSCA -------------------- */
+    .hero{margin:20px 0;display:flex;gap:20px;align-items:center}
+    .search{flex:1;background:var(--panel);padding:14px;border-radius:14px;border:6px solid #6c361a;box-shadow:var(--card-shadow);display:flex;gap:12px;align-items:center}
+    .search input{flex:1;border:0;background:transparent;font-size:15px;padding:8px;outline:none}
+    .filters{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{background:transparent;border:2px solid #6c361a;padding:8px 10px;border-radius:999px;font-weight:600;color:var(--accent);cursor:pointer}
 
-    .category{
-      background:var(--card-bg);
-      margin:18px 0;
-      border-radius:14px;
-      padding:18px;
-      border:8px solid var(--accent-2);
-      min-height:120px;
-    }
+    /* -------------------- CARDS DE CATEGORIA -------------------- */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .panel{background:var(--panel);padding:16px;border-radius:var(--radius);box-shadow:var(--card-shadow);border:6px solid #6c361a}
+    .panel h2{margin:0 0 8px 0;color:var(--accent)}
+    .items{display:flex;flex-direction:column;gap:12px}
 
-    .category h2{
-      margin:0 0 12px 0;
-      color:var(--accent);
-      font-size:22px;
-      padding-left:6px;
-    }
+    .product{display:flex;gap:12px;align-items:center}
+    .product .img{width:96px;height:96px;flex:0 0 96px;border-radius:12px;background:#6c361a;object-fit:cover;overflow:hidden;border:4px solid #6c361a}
+    .product .info{flex:1;min-width:0}
+    .product h3{margin:0;font-size:16px;color:var(--accent)}
+    .product p{margin:6px 0 0 0;font-size:13px;color:#5a4036}
+    .product .meta{display:flex;gap:8px;align-items:center;margin-top:8px}
+    .price{font-weight:900;color:var(--accent-2)}
+    .badge{background:#6c361a;padding:6px;border-radius:8px;font-size:12px;color:var(--accent)}
 
-    /* ========== ITEM (um por linha) ========== */
-    .item{
-      display:flex;
-      gap:18px;
-      align-items:flex-start;
-      padding:12px;
-      margin:10px 0;
-      border-radius:12px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.0));
-    }
-    .item img.thumb{
-      width:110px;
-      height:110px;
-      object-fit:cover;
-      border-radius:14px;
-      border: 3px solid rgba(106,47,20,0.25);
-      box-shadow: 0 4px 0 rgba(0,0,0,0.06);
-    }
-    .item .meta{
-      flex:1;
-      min-width:0;
-    }
-    .item .meta h3{
-      margin:0 0 6px 0;
-      color:var(--accent);
-      font-size:18px;
-    }
-    .item .meta p{
-      margin:0 0 10px 0;
-      color:#5b4034;
-      font-size:13.5px;
-      line-height:1.3;
-    }
-    .price{
-      font-weight:800;
-      color:var(--accent);
-      font-size:16px;
-    }
+    /* COMBO PROMINENTE */
+    .combo{display:flex;gap:12px;align-items:center}
+    .combo img{width:48%;border-radius:12px;max-height:220px;object-fit:cover}
+    .combo .desc{flex:1}
 
-    /* ========== COMBOS (foto maior) ========== */
-    .combo{
-      display:flex;
-      gap:22px;
-      align-items:center;
-      padding:14px;
-      border-radius:12px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
-    }
-    .combo img{
-      width:320px;
-      max-width:45%;
-      height:220px;
-      object-fit:cover;
-      border-radius:12px;
-      border: 4px solid rgba(106,47,20,0.25);
-    }
-    .combo .info{ flex:1; min-width:0; }
+    /* RODAPÉ DE INFORMAÇÕES */
+    .info-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+    .info-card{background:linear-gradient(180deg,#fff,#fffef8);padding:12px;border-radius:12px;border:1px solid #6c361a}
 
-    /* ========== RODAPÉ ========== */
-    footer{
-      max-width:1200px;
-      margin:18px auto 50px;
-      text-align:center;
-      color:#4a352d;
-    }
-    footer .socials{ margin-top:6px; }
+    /* WHATSAPP FIXO */
+    .whatsapp{position:fixed;right:18px;bottom:18px;background:#25d366;color:#fff;border-radius:999px;padding:14px 16px;font-weight:800;box-shadow:0 10px 30px rgba(37,211,102,0.18);z-index:1600;text-decoration:none;display:flex;align-items:center;gap:10px}
 
-    /* ========== RESPONSIVO ========== */
-    @media (max-width:860px){
-      .item{ flex-direction:row; }
-      .combo{ flex-direction:column; }
-      .combo img{ max-width:100%; width:100%; height:210px; }
+    /* SIDENAV (mobile overlay) */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;z-index:1500}
+    .sidenav{position:fixed;right:0;top:0;height:100%;width:320px;max-width:86%;background:linear-gradient(180deg,var(--panel),#fff);padding:22px;border-left:8px solid var(--accent);transform:translateX(110%);transition:transform .28s ease;z-index:1550}
+    .sidenav.open{transform:translateX(0)}
+    .overlay.open{display:block}
+
+    .sidenav a{display:block;padding:10px 8px;text-decoration:none;color:var(--accent);font-weight:700;border-radius:8px}
+
+    /* -------------------- ESTILOS RESPONSIVOS -------------------- */
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr}
+      .hero{flex-direction:column}
+      .combo img{width:100%}
     }
     @media (max-width:520px){
-      .hamburger{ right:14px; top:14px; }
-      .brand{ font-size:20px; padding:18px 12px; }
-      .item img.thumb{ width:88px; height:88px; }
+      .brand h1{font-size:16px}
+      .brand p{display:none}
+      .product .img{width:78px;height:78px}
+      .product h3{font-size:15px}
+      .wrap{padding:8px}
     }
 
-    /* Pequena transição para links ancoras */
-    html{ scroll-behavior:smooth; }
+    /* UTILIDADES */
+    .muted{color:#5f4437;font-size:13px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="delicias-do-jose-iconpng.png" alt="Logo Delícias do José" class="logo">
+        <div>
+          <h1>Delícias do José</h1>
+          <p class="muted">Bolos caseiros, piscininhas e combos — fresco todo dia</p>
+        </div>
+      </div>
 
-  <header>
-    <div class="brand">Cardápio da Loja</div>
-  </header>
+      <div class="top-controls">
+        <div class="cta">
+          <a class="btn" href="#horarios">Horário</a>
+          <a class="btn secondary" href="#redes">Redes</a>
+        </div>
 
-  <!-- HAMBURGER -->
-  <div class="hamburger" id="hamb">
-    <div class="bar"></div>
+        <button class="hambutton" id="hamb" aria-expanded="false" aria-controls="sidenav">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="sr-only">Abrir menu</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="search" role="search" aria-label="Procure bolos e sabores">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="#8b5a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><circle cx="11" cy="11" r="6" stroke="#8b5a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <input id="search" placeholder="Procure: ex." />
+        <div class="filters" aria-hidden="true">
+          <button class="chip" data-filter="all">Tudo</button>
+          <button class="chip" data-filter="caseiros">Caseiros</button>
+          <button class="chip" data-filter="piscininhas">Piscininhas</button>
+          <!-- salgadinhos só ativa depois -->
+          <button class="chip" data-filter="salgadinhos" title="Ative quando pronto" disabled>• Salgadinhos</button>
+        </div>
+      </div>
+    </section>
+
+    <main class="grid" id="catalog">
+
+      <!-- BOLOS CASEIROS -->
+      <section class="panel" data-category="caseiros" id="bolos-caseiros">
+        <h2>Bolos Caseiros</h2>
+        <div class="items">
+
+          <!-- Item (trocar src das imagens pelos arquivos reais) -->
+          <div class="product" data-name="pacoca">
+  <img class="img" src="pacoca.jpeg" alt="Paçoca" />
+  <div class="info"><h3>Paçoca</h3><p>sabor marcante e cremoso de paçoca caseira.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="morango">
+  <img class="img" src="morango.jpeg" alt="Morango" />
+  <div class="info"><h3>Morango</h3><p>bolo delicado com aroma e cor suave de morango.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="abacaxi">
+  <img class="img" src="abacaxi.jpeg" alt="Abacaxi" />
+  <div class="info"><h3>Abacaxi</h3><p>sabor tropical com pedaços suculentos de abacaxi.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="coco">
+  <img class="img" src="coco.jpeg" alt="Coco" />
+  <div class="info"><h3>Coco</h3><p>sabor leve e úmido, com coco ralado no preparo.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="formigueiro">
+  <img class="img" src="formigueiro.jpeg" alt="Formigueiro" />
+  <div class="info"><h3>Formigueiro</h3><p>bolo macio com granulado de chocolate misturado na massa.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="fubacomcoco">
+  <img class="img" src="fubacomcoco.jpeg" alt="Fubá com Coco" />
+  <div class="info"><h3>Fubá com Coco</h3><p>mistura leve de fubá e coco ralado.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="fubacomervadoce">
+  <img class="img" src="fubacomervadoce.jpeg" alt="Fubá com Erva-doce" />
+  <div class="info"><h3>Fubá com Erva-doce</h3><p>um toque aromático de erva-doce no bolo de fubá.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="mesclado">
+  <img class="img" src="mesclado.jpeg" alt="Mesclado" />
+  <div class="info"><h3>Mesclado</h3><p>combinação de massas branca e de chocolate.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="cenoura">
+  <img class="img" src="cenoura.jpeg" alt="Cenoura" />
+  <div class="info"><h3>Cenoura</h3><p>massa leve com cobertura farta de chocolate.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="banana">
+  <img class="img" src="banana.jpeg" alt="Banana" />
+  <div class="info"><h3>Banana</h3><p>feito com bananas maduras e pitada de canela.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="churros">
+  <img class="img" src="churros.jpeg" alt="Churros" />
+  <div class="info"><h3>Churros</h3><p>recheado com doce de leite e polvilhado com açúcar e canela.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="fubacomgoiabada">
+  <img class="img" src="goiabada.jpeg" alt="Fubá com Goiabada" />
+  <div class="info"><h3>Fubá com Goiabada</h3><p>bolo de fubá com cubos de goiabada derretendo por dentro.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="milhocremoso">
+  <img class="img" src="milhocremoso.jpeg" alt="Milho Cremoso" />
+  <div class="info"><h3>Milho Cremoso</h3><p>bolo macio com sabor intenso de milho.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="ninho">
+  <img class="img" src="ninho.jpeg" alt="Ninho" />
+  <div class="info"><h3>Ninho</h3><p>macio com leite Ninho misturado na massa e cobertura cremosa de Ninho por cima.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="aipim">
+  <img class="img" src="aipim.jpeg" alt="Aipim" />
+  <div class="info"><h3>Aipim</h3><p>bolo macio e úmido, feito com mandioca ralada.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+
+          <!-- ... mais itens copiados do seu original (mantive nomes, preços e descrições) -->
+
+        </div>
+      </section>
+
+      <!-- BOLOS PISCININHAS -->
+      <section class="panel" data-category="piscininhas" id="bolos-piscininhas">
+        <h2>Bolos Piscininhas</h2>
+        <div class="items">
+          <div class="product" data-name="limao">
+  <img class="img" src="piscininhadelimao.jpeg" alt="Limão" />
+  <div class="info"><h3>Limão</h3><p>sabor cítrico e refrescante, com cobertura cremosa de limão.</p><div class="meta"><div class="price">R$ 18</div></div></div>
+</div>
+
+<div class="product" data-name="limaoebrigadeiro">
+  <img class="img" src="plimaocombrigadeiro.jpeg" alt="Limão e Brigadeiro" />
+  <div class="info"><h3>Limão e Brigadeiro</h3><p>combinação de brigadeiro com o toque cítrico do limão.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="brigadeiro">
+  <img class="img" src="piscininhadebrigadeiro.jpeg" alt="Brigadeiro" />
+  <div class="info"><h3>Brigadeiro</h3><p>clássico do chocolate, com cobertura cremosa e granulados.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="brigadeirobrancopreto">
+  <img class="img" src="brigadeirobrancoepreto.jpeg" alt="Brigadeiro Branco e Preto" />
+  <div class="info"><h3>Brigadeiro Branco e Preto</h3><p>duas camadas de brigadeiro: branco e tradicional, no mesmo bolo.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="maracuja">
+  <img class="img" src="piscininhademaracuja.jpeg" alt="Maracujá" />
+  <div class="info"><h3>Maracujá</h3><p>recheio suave e azedinho, feito com polpa natural da fruta.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="ninho">
+  <img class="img" src="piscininhadeninho.jpeg" alt="Ninho" />
+  <div class="info"><h3>Ninho</h3><p>macio com leite Ninho misturado na massa e cobertura cremosa de Ninho por cima.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="ninhoebrigadeiro">
+  <img class="img" src="pninhocombrigadeiro.jpeg" alt="Ninho e Brigadeiro" />
+  <div class="info"><h3>Ninho e Brigadeiro</h3><p>mistura irresistível de chocolate e leite ninho cremoso.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+<div class="product" data-name="maracujaebrigadeiro">
+  <img class="img" src="pmaracujacombrigadeiro.jpg" alt="Maracujá e Brigadeiro" />
+  <div class="info"><h3>Maracujá e Brigadeiro</h3><p>equilíbrio entre o doce do brigadeiro e o azedinho do maracujá.</p><div class="meta"><div class="price">R$ 22</div></div></div>
+</div>
+
+
+          <!-- ... mais itens -->
+        </div>
+      </section>
+
+      <!-- SALGADINHOS (COMENTADO — ativa quando quiser) -->
+      <!--
+      <section class="panel" data-category="salgadinhos" id="salgadinhos">
+        <h2>Salgadinhos</h2>
+        <div class="items">
+          <div class="product" data-name="Coxinha">
+            <img class="img" src="coxinha.jpeg" alt="Coxinha" />
+            <div class="info"><h3>Coxinha</h3><p>Coxinha crocante com recheio cremoso.</p><div class="meta"><div class="price">R$ 5</div></div></div>
+          </div>
+           mais salgadinhos -->
+        </div>
+      </section>
+
+      <!-- COMBOS PROMOCIONAIS -->
+      <!-- <section class="panel" id="combos">
+        <h2>Combos</h2>
+        <div class="combo">
+          <img src="combo-exemplo.jpeg" alt="Combo festa" />
+          <div class="desc">
+            <h3>Combo Festa Médio</h3>
+            <p>1 bolo grande + 12 salgadinhos + 6 fatias de torta. Ideal para reuniões e pequenas festas.</p>
+            <div class="meta"><div class="price">R$ 120</div><div class="muted">— reserve com 24h de antecedência</div></div>
+          </div>
+        </div>
+      </section> -->
+
+      <!-- HORÁRIOS -->
+      <section class="panel" id="horarios">
+        <h2>Horários</h2>
+        <div class="info-row">
+          <div class="info-card"><strong>Terça a Sexta</strong><div class="muted">13:00 — 18:00</div></div>
+          <div class="info-card"><strong>Sábado</strong><div class="muted">14:00 — 20:00</div></div>
+          <div class="info-card"><strong>Domingo e Segunda</strong><div class="muted">Fechado</div></div>
+        </div>
+      </section>
+
+      <!-- REDES SOCIAIS E CONTATO -->
+      <section class="panel" id="redes">
+        <h2>Redes e Contato</h2>
+        <div class="info-row">
+          <div class="info-card"><strong>Instagram</strong><div class="muted">@delicias_do_jose.1</div></div>
+          <div class="info-card"><strong>TikTok</strong><div class="muted">@delicias_do_jose.1</div></div>
+          <div class="info-card"><strong>WhatsApp</strong><div class="muted">(21) 99138-2676</div></div>
+          <div class="info-card"><strong>Facebook</strong><div class="muted">Delícias do José</div></div>
+        </div>
+      </section>
+
+    </main>
+
   </div>
 
-  <!-- OVERLAY + SIDE NAV (Opção A - overlay) -->
+  <!-- BOTÃO FIXO DE WHATSAPP -->
+  <a class="whatsapp" href="https://wa.me/5521991382676" target="_blank" aria-label="Chamar no WhatsApp">📱 Pedir pelo WhatsApp</a>
+
+  <!-- OVERLAY E SIDENAV -->
   <div class="overlay" id="overlay" aria-hidden="true"></div>
-  <nav class="side-nav" id="sidenav" aria-hidden="true">
-    <h3>Ir para</h3>
+  <nav class="sidenav" id="sidenav" aria-hidden="true">
+    <h3 style="margin-top:0;color:var(--accent)">Navegar</h3>
     <a href="#bolos-caseiros">Bolos Caseiros</a>
     <a href="#bolos-piscininhas">Bolos Piscininhas</a>
-    <!-- <a href="#confeitados">Confeitados</a>  Confeitados comentado — só descomentar quando quiser vender -->
-    <a href="#salgadinhos">Salgadinhos</a>
+    <!-- <a href="#salgadinhos">Salgadinhos</a> descomente quando quiser -->
     <a href="#combos">Combos</a>
     <a href="#horarios">Horários</a>
     <a href="#redes">Redes Sociais</a>
   </nav>
 
-  <main>
-    <section class="container">
-
-      <!-- ========== BOLOS CASEIROS ========== -->
-      <div class="category" id="bolos-caseiros">
-        <h2>Bolos Caseiros</h2>
-
-        <!-- exemplo de item: Troque a src pelo caminho da sua imagem -->
-        <article class="item">
-          <img class="thumb" src="pacoca.jpeg" alt="Paçoca - thumbnail">
-          <div class="meta">
-            <h3>Paçoca</h3>
-            <p>sabor marcante e cremoso de paçoca caseira.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="morango.jpeg" alt="Paçoca - thumbnail">
-          <div class="meta">
-            <h3>Morango</h3>
-            <p>bolo delicado com aroma e cor suave de morango.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="abacaxi.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Abacaxi</h3>
-            <p>sabor tropical com pedaços suculentos de abacaxi.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="coco.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Coco</h3>
-            <p>sabor leve e úmido, com coco ralado no preparo.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="formigueiro.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Formigueiro</h3>
-            <p>bolo macio com granulado de chocolate misturado na massa.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="fubacomcoco.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Fubá com Coco</h3>
-            <p>mistura leve de fubá e coco ralado.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="fubacomervadoce.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Fubá com Erva-doce</h3>
-            <p>um toque aromático de erva-doce no bolo de fubá.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="mesclado.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Mesclado</h3>
-            <p>combinação de massas branca e de chocolate.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="cenoura.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Cenoura</h3>
-            <p>massa leve com cobertura farta de chocolate.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="banana.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Banana</h3>
-            <p>feito com bananas maduras e pitada de canela.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="churros.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Churros</h3>
-            <p>recheado com doce de leite e polvilhado com açúcar e canela.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="goiabada.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Fubá com Goiabada</h3>
-            <p>bolo de fubá com cubos de goiabada derretendo por dentro.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="milhocremoso.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Milho Cremoso</h3>
-            <p>bolo macio com sabor intenso de milho.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="ninho.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Ninho</h3>
-            <p>macio com leite Ninho misturado na massa e cobertura cremosa de Ninho por cima.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="aipim.jpeg" alt="Abacaxi - thumbnail">
-          <div class="meta">
-            <h3>Aipim</h3>
-            <p>bolo macio e úmido, feito com mandioca ralada.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <!-- ADICIONE AQUI os demais itens (copiar <article class="item"> ... ) -->
-      </div>
-
-      <!-- ========== BOLOS PISCININHAS ========== -->
-      <div class="category" id="bolos-piscininhas">
-        <h2>Bolos Piscininhas</h2>
-
-        <article class="item">
-          <img class="thumb" src="piscininhadelimao.jpeg" alt="Piscininha exemplo">
-          <div class="meta">
-            <h3>Limão</h3>
-            <p>sabor cítrico e refrescante, com cobertura cremosa de limão.</p>
-            <div class="price">R$ 18</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="plimaocombrigadeiro.jpeg" alt="Piscininha exemplo">
-          <div class="meta">
-            <h3>Limão e Brigadeiro</h3>
-            <p>combinação de brigadeiro com o toque cítrico do limão.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="piscininhadebrigadeiro.jpeg" alt="Piscininha exemplo">
-          <div class="meta">
-            <h3>Brigadeiro</h3>
-            <p>clássico do chocolate, com cobertura cremosa e granulados.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="brigadeirobrancoepreto.jpeg" alt="Piscininha exemplo">
-          <div class="meta">
-            <h3>Brigadeiro Branco e Preto</h3>
-            <p>duas camadas de brigadeiro: branco e tradicional, no mesmo bolo.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="piscininhademaracuja.jpeg" alt="Piscininha exemplo">
-          <div class="meta">
-            <h3>Maracujá</h3>
-            <p>recheio suave e azedinho, feito com polpa natural da fruta.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="piscininhadeninho.jpeg" alt="Piscininha exemplo">
-          <div class="meta">
-            <h3>Ninho</h3>
-            <p>macio com leite Ninho misturado na massa e cobertura cremosa de Ninho por cima.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="pninhocombrigadeiro.jpeg" alt="Piscininha exemplo">
-          <div class="meta">
-            <h3>Ninho e Brigadeiro</h3>
-            <p>mistura irresistível de chocolate e leite ninho cremoso.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <article class="item">
-          <img class="thumb" src="pmaracujacombrigadeiro.jpg" alt="Piscininha exemplo">
-          <div class="meta">
-            <h3>Maracujá e Brigadeiro</h3>
-            <p>equilíbrio entre o doce do brigadeiro e o azedinho do maracujá.</p>
-            <div class="price">R$ 22</div>
-          </div>
-        </article>
-
-        <!-- mais itens... -->
-      </div>
-
-      <!-- ========== CONFEITADOS (COMENTADO — ativa depois) ==========
-      <div class="category" id="confeitados">
-        <h2>Confeitados</h2>
-        <article class="item">
-          <img class="thumb" src="caminho/da/imagem.jpg" alt="Confeitado">
-          <div class="meta">
-            <h3>Confeitado Exemplo</h3>
-            <p>Descrição do confeitado.</p>
-            <div class="price">R$ 40</div>
-          </div>
-        </article>
-      </div>
-      ================================================================ -->
-
-      <!-- ========== SALGADINHOS ========== -->
-      <!-- <div class="category" id="salgadinhos">
-        <h2>Salgadinhos</h2>
-
-        <article class="item">
-          <img class="thumb" src="/mnt/data/ccf153ef-121e-47ef-b80a-9456d57451cb.png" alt="Salgadinho">
-          <div class="meta">
-            <h3>Coxinha</h3>
-            <p>coxinha crocante com recheio cremoso.</p>
-            <div class="price">R$ 5</div>
-          </div>
-        </article>
-
-        <!-- mais salgadinhos -->
-      <!-- </div>
-
-      <!-- ========== COMBOS (foto maior) ========== -->
-       <!-- <div class="category" id="combos">
-        <h2>Combos</h2>
-
-        <div class="combo">
-          <img src="/mnt/data/ccf153ef-121e-47ef-b80a-9456d57451cb.png" alt="Combo Exemplo">
-          <div class="info">
-            <h3>Combo Festa Médio</h3>
-            <p>1 bolo grande + 12 salgadinhos + 6 fatias de torta. Ideal para reuniões e pequenas festas. Aqui você pode descrever item por item do combo.</p>
-            <div class="price">R$ 120</div>
-          </div>
-        </div>
-
-        <!-- mais combos (cada um com .combo) -->
-      <!-- </div> 
-
-      <!-- ========== HORÁRIOS ========== -->
-      <div class="category" id="horarios">
-        <h2>Horários</h2>
-        <div style="padding:8px 6px; color:#51382f">
-          <strong>Terça a Sexta: 13:00 — 18:00</strong><br>
-          <strong>Sábado: 14:00 — 20:00</strong><br>
-          <strong>Domingo e Segunda: Fechado</strong>
-        </div>
-      </div>
-
-      <!-- ========== REDES SOCIAIS ========== -->
-<div class="category" id="redes">
-  <h2>Redes Sociais</h2>
-  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-
-    <div>
-      <strong>Instagram:</strong>
-      <a href="https://instagram.com/delicias_do_jose.1" target="_blank">
-        @delicias_do_jose.1
-      </a>
-    </div>
-
-    <div>
-      <strong>TikTok:</strong>
-      <a href="https://tiktok.com/@delicias_do_jose.1" target="_blank">
-        @delicias_do_jose.1
-      </a>
-    </div>
-
-    <div>
-      <strong>WhatsApp:</strong>
-      <a href="https://wa.me/5521991382676" target="_blank">
-        (21) 99138-2676
-      </a>
-    </div>
-
-    <div><strong>Facebook:</strong> Delícias do José</div>
-
-  </div>
-</div>
-
-    </section>
-  </main>
-
-  <!-- <footer>
-    <div>Feito com carinho — use este arquivo como base e substitua imagens/textos</div>
-    <div class="socials">📞 WhatsApp • 📷 Instagram • 📍 Endereço</div>
-  </footer> -->
-
   <script>
-    // Menu overlay toggle
+    // ELEMENTOS
     const hamb = document.getElementById('hamb');
     const overlay = document.getElementById('overlay');
     const sidenav = document.getElementById('sidenav');
+    const chips = document.querySelectorAll('.chip');
+    const search = document.getElementById('search');
 
+    // ABRIR / FECHAR SIDENAV
     function openMenu(){
-      overlay.classList.add('open');
       sidenav.classList.add('open');
+      overlay.classList.add('open');
+      hamb.setAttribute('aria-expanded','true');
       overlay.setAttribute('aria-hidden','false');
       sidenav.setAttribute('aria-hidden','false');
     }
     function closeMenu(){
-      overlay.classList.remove('open');
       sidenav.classList.remove('open');
+      overlay.classList.remove('open');
+      hamb.setAttribute('aria-expanded','false');
       overlay.setAttribute('aria-hidden','true');
       sidenav.setAttribute('aria-hidden','true');
     }
 
-    hamb.addEventListener('click', () => {
-      if (sidenav.classList.contains('open')) closeMenu();
-      else openMenu();
-    });
+    hamb.addEventListener('click', ()=>{ if(sidenav.classList.contains('open')) closeMenu(); else openMenu(); });
     overlay.addEventListener('click', closeMenu);
+    document.querySelectorAll('#sidenav a').forEach(a=>a.addEventListener('click', closeMenu));
 
-    // Fecha menu ao clicar em um link
-    document.querySelectorAll('.side-nav a').forEach(a=>{
-      a.addEventListener('click', closeMenu);
+    // FILTRO RÁPIDO (chips)
+    chips.forEach(c=>{
+      c.addEventListener('click', e=>{
+        const f = e.currentTarget.getAttribute('data-filter');
+        document.querySelectorAll('[data-category]').forEach(sec=>{
+          if(f==='all') sec.style.display='block';
+          else if(sec.getAttribute('data-category')===f) sec.style.display='block';
+          else sec.style.display='none';
+        });
+      });
     });
 
-    // Touch-friendly: swipe right to close (mobile)
+    // BUSCA SIMPLES
+    search.addEventListener('input', ()=>{
+      const q = search.value.trim().toLowerCase();
+      if(!q){ document.querySelectorAll('.product').forEach(p=>p.style.display='flex'); return; }
+      document.querySelectorAll('.product').forEach(p=>{
+        const name = p.getAttribute('data-name') || '';
+        const txt = (p.innerText||'').toLowerCase();
+        p.style.display = (name.toLowerCase().includes(q) || txt.includes(q)) ? 'flex' : 'none';
+      });
+    });
+
+    // AJEITAR FOCO EM LINKS (UX)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+
+    // Atalho de teclado: 'm' abre menu, 'w' abre Whats
+    document.addEventListener('keydown', e=>{
+      if(e.key==='m') { if(sidenav.classList.contains('open')) closeMenu(); else openMenu(); }
+      if(e.key==='w') window.open('https://wa.me/5521991382676','_blank');
+    });
+
+    // TOQUE: swipe right para fechar
     let startX = null;
-    overlay.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-    overlay.addEventListener('touchmove', e => {
-      if (!startX) return;
-      const dx = e.touches[0].clientX - startX;
-      if (dx > 60) closeMenu();
+    overlay.addEventListener('touchstart', e=> startX = e.touches[0].clientX );
+    overlay.addEventListener('touchmove', e=>{
+      if(!startX) return; const dx = e.touches[0].clientX - startX; if(dx>60) closeMenu();
     });
+
+    // Sugestão: pre-carregar imagens (quando estiver pronto)
+    // const imgs = ['pacoca.jpeg','morango.jpeg','abacaxi.jpeg','cenoura.jpeg']; imgs.forEach(s=>new Image().src=s);
   </script>
 </body>
 </html>
